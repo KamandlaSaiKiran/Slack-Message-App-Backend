@@ -19,4 +19,4 @@ app.listen(PORT, () => {
   connectDB();
 });
 
-app.use('/api',apiRouter);
+app.use('/api', apiRouter);
