@@ -17,7 +17,7 @@ const userRepository = {
 
   // Custom method to find a user by username
   getByUsername: async function (username) {
-    const user = await User.findOne({ username }); // Find a user document where the username matches
+    const user = await User.findOne({ username }).select('-password'); //exlude password and Find a user document where the username matches
     return user; // Return the found user or null if not found
   }
 };

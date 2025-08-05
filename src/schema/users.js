@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,7 +11,8 @@ const userSchema = new mongoose.Schema(
         // eslint-disable-next-line no-useless-escape
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         'Please fill a valid email address'
-      ]
+      ],
+      minLenght: [3, 'Username must be atleast three characters']
     },
     password: {
       type: String,
@@ -38,6 +40,21 @@ using .save() — only for operations that trigger the save() method.
 userSchema.pre('save', function saveUser(next) {
   // `this` refers to the user document about to be saved
   const user = this;
+  // Generate a cryptographic salt using bcrypt with 9 salt rounds
+  // Salt rounds determine how many times the hashing process is applied
+  // Higher rounds = more security but slower performance
+  const SALT = bcrypt.genSaltSync(9);
+
+  // Hash the user's plain-text password with the generated salt
+  // Even if two users have the same password, the resulting hash will be different
+  // because the salt is unique for each password
+  const hashedPassword = bcrypt.hashSync(user.password, SALT);
+
+  // Replace the plain-text password in the user object with the hashed version
+  // This ensures that the actual password is never stored in plain text
+  // Only the hashed version will be saved to the database for security
+  user.password = hashedPassword;
+
   // Set a default avatar using the RoboHash service,
   // which generates a unique image based on the username
   this.avatar = `https://robohash.org/${user.username}`;
