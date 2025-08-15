@@ -6,6 +6,7 @@ import {
   userSignInSchema,
   userSignUpSchema
 } from '../../validators/userSchema.js';
+import { isAuthenticated } from '../../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/signup', validate(userSignUpSchema), signUp);
-router.post('/signin', validate(userSignInSchema), signIn);
+router.post('/signin', validate(userSignInSchema), isAuthenticated,signIn);
+// router.post('/signin', validate(userSignInSchema), signIn);
 
 export default router;
