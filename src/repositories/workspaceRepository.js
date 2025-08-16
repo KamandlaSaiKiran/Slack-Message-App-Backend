@@ -1,9 +1,9 @@
 import crudRepository from './crudRepository.js';
 import Workspace from '../schema/workspace.js';
-import ClientError from '../utils/errors/clientError';
+import ClientError from '../utils/errors/clientError.js';
 import { StatusCodes } from 'http-status-codes';
 import channelRepository from './channelRepository.js';
-import User from '../schema/users';
+import User from '../schema/users.js';
 
 const workspaceRepository = {
   ...crudRepository(Workspace),
