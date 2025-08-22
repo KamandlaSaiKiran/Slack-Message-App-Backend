@@ -6,7 +6,12 @@ import { StatusCodes } from 'http-status-codes';
 import channelRepository from '../repositories/channelRepository.js';
 import userRepository from '../repositories/userRepository.js';
 
-const isUserMemberOfWorkspace = (workspace, userId) => {
+// const isUserMemberOfWorkspace = (workspace, userId) => {
+//   return workspace.members.find(
+//     (member) => member.memberId.toString() === userId
+//   );
+// };
+export const isUserMemberOfWorkspace = (workspace, userId) => {
   return workspace.members.find(
     (member) => member.memberId.toString() === userId
   );
