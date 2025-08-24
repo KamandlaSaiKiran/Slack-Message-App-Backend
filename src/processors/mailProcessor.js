@@ -1,5 +1,6 @@
 import mailQueue from '../queues/mailQueue';
 import mailer from '../config/mailConfig.js';
+
 mailQueue.process(async (job) => {
   const emailData = job.data;
   console.log('Processing email', emailData);

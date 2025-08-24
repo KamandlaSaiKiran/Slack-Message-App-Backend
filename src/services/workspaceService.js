@@ -5,7 +5,8 @@ import ClientError from '../utils/errors/clientError.js';
 import { StatusCodes } from 'http-status-codes';
 import channelRepository from '../repositories/channelRepository.js';
 import userRepository from '../repositories/userRepository.js';
-import { addEmailtoMailQueue } from '../producers/mailQueueProducer.js';
+// import { addEmailtoMailQueue } from '../producers/mailQueueProducer.js';
+import { addEmailtoMail } from '../processors/mailProcessOnly.js';
 import { workspaceJoinMail } from '../utils/common/mailObject.js';
 
 // const isUserMemberOfWorkspace = (workspace, userId) => {
@@ -239,8 +240,13 @@ export const addMemberToWorkspaceService = async (
       memberId,
       role
     );
-    addEmailtoMailQueue({
+    // addEmailtoMailQueue({
+    //   ...workspaceJoinMail(workspace),
+    //   to: isValidUser.email
+    // });
+    addEmailtoMail({
       ...workspaceJoinMail(workspace),
+      workspace,
       to: isValidUser.email
     });
     return response;
