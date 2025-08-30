@@ -1,10 +1,15 @@
 import express from 'express';
 import { PORT } from './config/serverConfig.js';
+import {createServer} from 'http';
 import { StatusCodes } from 'http-status-codes';
+import {Server} from 'socket.io';
+
 import connectDB from './config/dBConfig.js';
 import apiRouter from './routes/apiRoutes.js';
 // import mailer from './config/mailConfig.js';
 const app = express();
+const server = createServer(app);
+const io = new Server(server);
 app.use(express.json());
 app.use(express.urlencoded());
 
@@ -14,7 +19,17 @@ app.get('/ping', (req, res) => {
   });
 });
 
-app.listen(PORT, async () => {
+io.on('connection', (socket)=>{
+  //here whenever client connects to the server this callback (socket) will be called 
+  console.log('a user connected ', socket.id);
+  //here when ever a client messages, we collect it here from client and passed it to the server
+  socket.on('messageFromClient',(data)=>{
+    console.log('Message from client',data);
+    //here server sents or broadcasts the new message to everyone whoever connected to the server
+    io.emit('new message',data.toUpperCase());
+  })
+})
+server.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
   connectDB();
   // const mailResponse = await mailer.sendMail({
