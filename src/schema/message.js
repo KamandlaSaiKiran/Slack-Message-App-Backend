@@ -18,7 +18,7 @@ const messageSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'SenderId is required']
   },
-  worspaceId: {
+  workspaceId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'workspace',
     required: [true, 'workspace id is required']

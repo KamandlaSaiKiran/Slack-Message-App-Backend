@@ -1,14 +1,14 @@
 import { StatusCodes } from 'http-status-codes';
 import channelRepository from '../repositories/channelRepository.js';
-import messageRespository from '../repositories/messageRepository.js';
+import messageRepository from '../repositories/messageRepository.js';
 import ClientError from '../utils/errors/clientError.js';
-import { isUserMemberOfWorkspace } from './workspaceService';
+import { isUserMemberOfWorkspace } from './workspaceService.js';
 
 export const getMessagesService = async (messageParams, page, limit, user) => {
   const channelDetails = await channelRepository.getChannelWithWorkspaceDetails(
     messageParams.channelId
   );
-  const messages = await messageRespository.getPaginatedMessages(
+  const messages = await messageRepository.getPaginatedMessages(
     messageParams,
     page,
     limit
@@ -25,4 +25,9 @@ export const getMessagesService = async (messageParams, page, limit, user) => {
     });
   }
   return messages;
+};
+
+export const createMessageService = async (message) => {
+  const newMessage = await messageRepository.create(message);
+  return newMessage;
 };

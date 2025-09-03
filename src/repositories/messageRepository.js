@@ -1,7 +1,7 @@
 import crudRepository from './crudRepository.js';
-import Message from '../schema/users.js';
-const messageRespository = {
-  ...crudRepository,
+import Message from '../schema/message.js';
+const messageRepository = {
+  ...crudRepository(Message),
   getPaginatedMessages: async (messageParams, page, limit) => {
     const messages = await Message.find(messageParams)
       .sort({ createdAt: -1 })
@@ -12,4 +12,4 @@ const messageRespository = {
   }
 };
 
-export default messageRespository;
+export default messageRepository;
